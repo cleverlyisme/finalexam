@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const Class = require("./class.model");
 
 const scheduleSchema = new Schema({
-  classRoom: {
+  class: {
     type: Schema.Types.ObjectId,
     ref: Class,
     required: true,
@@ -19,6 +19,7 @@ const scheduleSchema = new Schema({
   isDeleted: {
     type: Boolean,
     required: true,
+    default: false,
   },
 });
 

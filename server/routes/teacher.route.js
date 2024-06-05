@@ -6,6 +6,11 @@ const teacherController = require("../controllers/teacher.controller");
 const teacherRoute = express.Router();
 
 teacherRoute.get(
+  "/",
+  auth(["admin"]),
+  teacherController.getAllTeachers
+);
+teacherRoute.get(
   "/students",
   auth(["teacher"]),
   teacherController.getStudentsOfMainClass

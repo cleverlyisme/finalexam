@@ -20,9 +20,6 @@ const adminSchema = new Schema({
     minlength: 8,
     trim: true,
   },
-  avatar: {
-    type: String,
-  },
   isDeleted: {
     type: Boolean,
     required: true,

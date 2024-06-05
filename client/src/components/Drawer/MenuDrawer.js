@@ -4,8 +4,10 @@ import { IoClose } from "react-icons/io5";
 import { BsCollectionPlay } from "react-icons/bs";
 import { HiOutlineUserGroup } from "react-icons/hi";
 import { BiPhoneCall } from "react-icons/bi";
-import { FaFacebook, FaGithub, FaLinkedin } from "react-icons/fa";
+import { FaFacebook, FaGithub, FaLinkedin, FaWallet } from "react-icons/fa";
 import { CiLogout } from "react-icons/ci";
+import { RiAccountCircleFill } from "react-icons/ri";
+import { PiStudentBold } from "react-icons/pi"; 
 
 import useAppContext from "../../hooks/useAppContext";
 import MainDrawer from "./MainDrawer";
@@ -72,12 +74,17 @@ const MenuDrawer = ({ drawerOpen, toggleDrawer }) => {
           {
             name: "Thông tin tài khoản",
             link: "/profile",
-            icon: BsCollectionPlay,
+            icon: RiAccountCircleFill,
           },
           {
             name: "Thông tin học sinh",
             link: "/about-us",
-            icon: HiOutlineUserGroup,
+            icon: PiStudentBold,
+          },
+          {
+            name: "Học phí",
+            link: "/fees",
+            icon: FaWallet
           },
           {
             name: "Liên hệ",

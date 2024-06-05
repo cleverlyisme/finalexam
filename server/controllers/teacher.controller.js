@@ -1,5 +1,15 @@
 const service = require("../services/teacher.service");
 
+const getAllTeachers = async (req, res) => {
+  try {
+    const teachers = await service.getAllTeachers();
+
+    res.status(200).send({ teachers });
+  } catch (err) {
+    res.status(400).json(err.message);
+  }
+}
+
 const getStudentsOfMainClass = async (req, res) => {
   try {
     const { userId } = req;
@@ -44,6 +54,7 @@ const markBreak = async (req, res) => {
 };
 
 module.exports = {
+  getAllTeachers,
   getStudentsOfMainClass,
   getStudentsOfMainClassByDate,
   markBreak,

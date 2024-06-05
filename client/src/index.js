@@ -23,8 +23,8 @@ root.render(
   <BrowserRouter>
     <AppContextProvider>
       <DrawerContext>
-        <Toaster position="top-right" richColors duration={3000} />
         <ReactNotifications />
+        <Toaster position="top-right" richColors duration={3000} />
         <App />
       </DrawerContext>
     </AppContextProvider>

@@ -1,19 +1,19 @@
 const mongoose = require("mongoose");
 const passwordHash = require("password-hash");
 const _ = require("lodash");
-// const { subjects } = require("./utils/constant";
+const { lessons } = require("./utils/constants");
 
 const Admin = require("./models/admin.model");
+const Semester = require("./models/semester.model");
 const Parent = require("./models/parent.model");
 const Teacher = require("./models/teacher.model");
 const Class = require("./models/class.model");
 const Student = require("./models/student.model");
 const Highlight = require("./models/highlight.model");
 const Event = require("./models/event.model");
-// const Schedule = require("./models/schedule.model";
-// const Grade = require("./models/grade.model";
-// const Semester = require("./models/semester.model";
-// const Event = require("./models/event.model";
+const Schedule = require("./models/schedule.model");
+// const Grade = require("./models/grade.model");
+// const Event = require("./models/event.model");
 
 const { MONGO_ATLAS_URI } = require("./utils/environments");
 
@@ -188,6 +188,19 @@ function randomDate(start, end) {
   return new Date(timestamp);
 }
 
+const semesters = [
+  {
+    from: 2024,
+    to: 2025,
+    semester: 1,
+  },
+  {
+    from: 2024,
+    to: 2025,
+    semester: 2,
+  }
+]
+
 const classes = [
   "10A1",
   "10A2",
@@ -217,6 +230,18 @@ async function createAdmin() {
     password,
   });
   await newAdmin.save();
+}
+
+async function createSemesters() {
+  console.log("Creating semester...");
+  for (const semester of semesters) {
+    const newSemester = new Semester({
+      from: semester.from,
+      to: semester.to,
+      semester: semester.semester,
+    });
+    await newSemester.save();
+  }
 }
 
 async function createClasses() {
@@ -286,6 +311,29 @@ async function createParent(studentId) {
   await newParent.save();
 }
 
+async function createSchedules(classSchedule) {
+  console.log("Creating schedules...");
+  const classes = await Class.find({});
+
+  for (const classRoom of classes) {
+    const shuffleSubjects = _.shuffle(lessons);
+    const schedule = ["Chào cờ", ...shuffleSubjects, "Sinh hoạt"];
+
+    const classSchedule = {
+      class: classRoom._id,
+      schedule: {
+        mon: schedule.slice(0, 5),
+        tue: schedule.slice(5, 10),
+        wed: schedule.slice(10, 15),
+        thu: schedule.slice(15, 20),
+        fri: schedule.slice(20, 25),
+      },
+    };
+    const newSchedule = new Schedule(classSchedule);
+    await newSchedule.save();
+  }
+}
+
 const highlight = {
   title: "Kế hoạch tham quan dã ngoại trường THCS Dev School",
   content:
@@ -313,15 +361,21 @@ async function createEvent() {
 
 const seed = async () => {
   await Admin.deleteMany({});
+  await Semester.deleteMany({});
   await Class.deleteMany({});
   await Teacher.deleteMany({});
   await Student.deleteMany({});
   await Parent.deleteMany({});
+  await Schedule.deleteMany({});
   await Highlight.deleteMany({});
   await Event.deleteMany({});
+  console.log("Deleted old datas");
 
   await createAdmin();
   console.log("Created admin");
+
+  await createSemesters();
+  console.log("Created semesters");
 
   await createClasses();
   console.log("Created classes");
@@ -339,11 +393,16 @@ const seed = async () => {
   await createParent(studentId);
   console.log("Created parent");
 
+  await createSchedules();
+  console.log("Created schedules");
+
   await createHighlight();
   console.log("Created highlights");
 
   await createEvent();
   console.log("Created event");
+
+  console.log("Done!")
 };
 
 seed();
@@ -376,68 +435,6 @@ seed();
 // );
 
 // createGrade(grades);
-
-// // create schedule
-// console.log("Creating schedules...");
-
-// let classRoom = [];
-// grades.forEach((grade) => {
-//   classRoom = [...classRoom, ...grade.classRoom];
-// });
-
-// const length = classRoom.length;
-
-// async function createSchedule(classSchedule) {
-//   const newSchedule = new Schedule(classSchedule);
-//   await newSchedule.save();
-// }
-
-// const lessons = [
-//   "Văn",
-//   "Văn",
-//   "Văn",
-//   "Văn",
-//   "Toán",
-//   "Toán",
-//   "Toán",
-//   "Toán",
-//   "Vật lý",
-//   "Vật lý",
-//   "Hóa học",
-//   "Hóa học",
-//   "Sinh học",
-//   "Sinh học",
-//   "Anh",
-//   "Anh",
-//   "Anh",
-//   "Sử",
-//   "Địa",
-//   "GDCD",
-//   "Âm nhạc",
-//   "Mỹ thuật",
-//   "Thể dục",
-// ];
-
-// for (let i = 0; i < length; i++) {
-//   const shuffleSubjects = _.shuffle(lessons);
-
-//   const schedule = ["Chào cờ", ...shuffleSubjects, "Sinh hoạt"];
-
-//   const classSchedule = {
-//     classRoom: classRoom[i],
-//     schedule: {
-//       mon: schedule.slice(0, 5),
-//       tue: schedule.slice(5, 10),
-//       wed: schedule.slice(10, 15),
-//       thu: schedule.slice(15, 20),
-//       fri: schedule.slice(20, 25),
-//     },
-//     isDeleted: false,
-//   };
-//   createSchedule(classSchedule).then(() =>
-//     console.log(`Created ${i + 1} of ${length} schedules`)
-//   );
-// }
 
 // // create students
 // console.log("Creating students...");

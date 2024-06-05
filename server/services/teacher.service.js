@@ -27,6 +27,12 @@ const formatStudents = (students, date) => {
   return formattedStudents || [];
 };
 
+const getAllTeachers = async () => {
+  const teachers = await Teacher.find().lean();
+  
+  return teachers || [];
+}
+
 const getStudentsOfMainClass = async (_id) => {
   const teacher = await Teacher.findOne({ _id }).lean();
 
@@ -98,6 +104,7 @@ const markBreak = async (_id, students, date, withPermission) => {
 };
 
 module.exports = {
+  getAllTeachers,
   getStudentsOfMainClass,
   getStudentsOfMainClassByDate,
   markBreak,

@@ -28,7 +28,7 @@ const parentSchema = new Schema(
         type: String,
       },
       yearOfBirth: {
-        type: String,
+        type: Number,
       },
       note: {
         type: String,
@@ -39,7 +39,7 @@ const parentSchema = new Schema(
         type: String,
       },
       yearOfBirth: {
-        type: String,
+        type: Number,
       },
       note: {
         type: String,

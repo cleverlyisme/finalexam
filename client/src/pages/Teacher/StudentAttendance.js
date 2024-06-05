@@ -12,7 +12,7 @@ import { DemoContainer, DemoItem } from "@mui/x-date-pickers/internals/demo";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
 import useAppContext from "../../hooks/useAppContext";
-import TeacherLayout from "../../components/Layout";
+import Layout from "../../components/Layout";
 import {
   getStudentsOfMainClass,
   markBreakStudent,
@@ -108,7 +108,7 @@ const StudentAttendance = () => {
   }, [dateValue]);
 
   return (
-    <TeacherLayout>
+    <Layout>
       <div className="flex flex-colo p-8 gap-6">
         <h2>Điểm danh học sinh</h2>
         <div className="w-full flex justify-evenly gap-4">
@@ -186,7 +186,7 @@ const StudentAttendance = () => {
           </div>
         </div>
       </div>
-    </TeacherLayout>
+    </Layout>
   );
 };
 

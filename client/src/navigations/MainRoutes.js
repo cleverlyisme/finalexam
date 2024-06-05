@@ -1,12 +1,19 @@
-import { Routes, Route } from "react-router-dom";
-
-import HomeRoute from "./HomeRoute";
+import AdminRoutes from "./AdminRoutes";
+import ParentRoutes from "./ParenRoutes";
+import TeacherRoutes from "./TeacherRoutes";
+import useAppContext from "../hooks/useAppContext";
 
 const MainRoutes = () => {
-  return (
-    <Routes>
-      <Route path="*" element={<HomeRoute />} />
-    </Routes>
+  const {
+    authState: { user },
+  } = useAppContext();
+
+  return user?.role === "admin" ? (
+    <AdminRoutes />
+  ) : user?.role === "teacher" ? (
+    <TeacherRoutes />
+  ) : (
+    <ParentRoutes />
   );
 };
 

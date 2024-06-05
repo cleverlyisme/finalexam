@@ -23,7 +23,7 @@ const teacherSchema = new Schema(
       trim: true,
     },
     yearOfBirth: {
-      type: String,
+      type: Number,
       required: true,
     },
     gender: {
