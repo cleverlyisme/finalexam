@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import { Row, Col, Input, Label, Alert } from "reactstrap";
 import PerfectScrollbar from "react-perfect-scrollbar";
 
-import AdminBlock from "./Admin/AdminBlock";
+import Block from "./common/Block";
 import SimpleHighlightEvent from "./SimpleHighlightEvent";
 import ViewModal from "./modals/ViewModal";
 import LabelRequired from "./common/LabelRequired";
@@ -89,7 +89,7 @@ const LastestHighlightOrEvent = (props) => {
   );
 
   return (
-    <AdminBlock
+    <Block
       title={props.isHighlight ? highlightTitle : "Sự kiện sắp tới"}
       icon={!props.isHighlight && "fab fa-elementor"}
       height={props.height || (props.noHeight && "") || "350px"}
@@ -122,7 +122,7 @@ const LastestHighlightOrEvent = (props) => {
             </Alert>
           ))}
       </PerfectScrollbar>
-    </AdminBlock>
+    </Block>
   );
 };
 

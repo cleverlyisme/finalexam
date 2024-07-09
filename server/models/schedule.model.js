@@ -10,11 +10,30 @@ const scheduleSchema = new Schema({
     required: true,
   },
   schedule: {
-    mon: [{ type: String, _id: false }],
-    tue: [{ type: String, _id: false }],
-    wed: [{ type: String, _id: false }],
-    thu: [{ type: String, _id: false }],
-    fri: [{ type: String, _id: false }],
+    mon: {
+      morning: [{ type: String, _id: false }],
+      afternoon: [{ type: String, _id: false }],
+    },
+    tue: {
+      morning: [{ type: String, _id: false }],
+      afternoon: [{ type: String, _id: false }],
+    },
+    wed: {
+      morning: [{ type: String, _id: false }],
+      afternoon: [{ type: String, _id: false }],
+    },
+    thu: {
+      morning: [{ type: String, _id: false }],
+      afternoon: [{ type: String, _id: false }],
+    },
+    fri: {
+      morning: [{ type: String, _id: false }],
+      afternoon: [{ type: String, _id: false }],
+    },
+    sat: {
+      morning: [{ type: String, _id: false }],
+      afternoon: [{ type: String, _id: false }],
+    },
   },
   isDeleted: {
     type: Boolean,

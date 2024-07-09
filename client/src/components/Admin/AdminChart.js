@@ -3,7 +3,7 @@ import { Row, Col } from "reactstrap";
 import Chart from "react-apexcharts";
 import { toast } from "sonner";
 
-import AdminBlock from "./AdminBlock";
+import Block from "../common/Block";
 import useAppContext from "../../hooks/useAppContext";
 import { getCharts } from "../../services/admin.service";
 
@@ -112,7 +112,7 @@ const AdminChart = (props) => {
   return (
     <Row>
       <Col md={6} className="mb-4">
-        <AdminBlock
+        <Block
           title="Tỷ lệ học sinh các khối trong trường"
           icon="fas fa-chart-pie"
           height="400px"
@@ -127,11 +127,11 @@ const AdminChart = (props) => {
               />
             </div>
           )}
-        </AdminBlock>
+        </Block>
       </Col>
 
       <Col md={6} className="mb-4">
-        <AdminBlock
+        <Block
           title="Phân loại học sinh 6 học kỳ gần nhất"
           icon="fas fa-chart-bar"
           height="400px"
@@ -144,7 +144,7 @@ const AdminChart = (props) => {
               height={350}
             />
           )}
-        </AdminBlock>
+        </Block>
       </Col>
     </Row>
   );

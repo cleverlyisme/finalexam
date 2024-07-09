@@ -1,7 +1,13 @@
 const mongoose = require("mongoose");
 const passwordHash = require("password-hash");
 const _ = require("lodash");
-const { lessons } = require("./utils/constants");
+const {
+  lessons,
+  scores,
+  conducts,
+  ranks,
+  status,
+} = require("./utils/constants");
 
 const Admin = require("./models/admin.model");
 const Semester = require("./models/semester.model");
@@ -12,7 +18,7 @@ const Student = require("./models/student.model");
 const Highlight = require("./models/highlight.model");
 const Event = require("./models/event.model");
 const Schedule = require("./models/schedule.model");
-// const Grade = require("./models/grade.model");
+const Fee = require("./models/fee.model");
 // const Event = require("./models/event.model");
 
 const { MONGO_ATLAS_URI } = require("./utils/environments");
@@ -190,6 +196,16 @@ function randomDate(start, end) {
 
 const semesters = [
   {
+    from: 2023,
+    to: 2024,
+    semester: 1,
+  },
+  {
+    from: 2023,
+    to: 2024,
+    semester: 2,
+  },
+  {
     from: 2024,
     to: 2025,
     semester: 1,
@@ -198,8 +214,8 @@ const semesters = [
     from: 2024,
     to: 2025,
     semester: 2,
-  }
-]
+  },
+];
 
 const classes = [
   "10A1",
@@ -258,6 +274,8 @@ async function createClasses() {
 const getRandomClassId = async () =>
   (await Class.aggregate([{ $sample: { size: 1 } }]))[0]._id;
 
+const getSemesters = async () => await Semester.find({ from: 2023 });
+
 const getRandomStudentId = async () =>
   (await Student.aggregate([{ $sample: { size: 1 } }]))[0]._id;
 
@@ -277,7 +295,7 @@ async function createTeacher(classId) {
   await newTeacher.save();
 }
 
-async function createStudents(classId) {
+async function createStudents(classId, semesters) {
   console.log("Creating students...");
   for (let i = 0; i < 45; i++) {
     const newStudent = new Student({
@@ -285,8 +303,73 @@ async function createStudents(classId) {
       dateOfBirth: randomDate(new Date(2008, 0, 1), new Date(2008, 11, 28)),
       gender: Math.random() < 0.5,
       mainClass: classId,
-      dayoffs: [],
+      dayOffs: [],
     });
+
+    for (const semester of semesters) {
+      newStudent.scores = [
+        ...newStudent.scores,
+        {
+          semester: semester._id,
+          detail: scores,
+        },
+      ];
+      newStudent.finalScore = [
+        ...newStudent.finalScore,
+        {
+          semester: semester._id,
+          score: _.random(8, 10),
+        },
+      ];
+      newStudent.conducts = [
+        ...newStudent.conducts,
+        {
+          semester: semester._id,
+          conduct: _.sample(conducts),
+        },
+      ];
+      newStudent.subjectTotalScore = [
+        ...newStudent.subjectTotalScore,
+        {
+          time: semester.from + "-" + semester.to,
+          detail: {
+            math: _.random(8, 10),
+            literature: _.random(8, 10),
+            english: _.random(8, 10),
+            physics: _.random(8, 10),
+            chemistry: _.random(8, 10),
+            biology: _.random(8, 10),
+            geography: _.random(8, 10),
+            history: _.random(8, 10),
+            law: _.random(8, 10),
+            music: _.random(8, 10),
+            art: _.random(8, 10),
+            sport: _.random(8, 10),
+          },
+        },
+      ];
+      newStudent.totalScore = [
+        ...newStudent.totalScore,
+        {
+          time: semester.from + "-" + semester.to,
+          score: _.random(8, 10),
+        },
+      ];
+      newStudent.totalConducts = [
+        ...newStudent.totalConducts,
+        {
+          time: semester.from + "-" + semester.to,
+          score: _.sample(conducts),
+        },
+      ];
+      newStudent.totalResult = [
+        ...newStudent.totalConducts,
+        {
+          time: semester.from + "-" + semester.to,
+          rank: _.sample(ranks),
+        },
+      ];
+    }
     await newStudent.save();
   }
 }
@@ -322,11 +405,30 @@ async function createSchedules(classSchedule) {
     const classSchedule = {
       class: classRoom._id,
       schedule: {
-        mon: schedule.slice(0, 5),
-        tue: schedule.slice(5, 10),
-        wed: schedule.slice(10, 15),
-        thu: schedule.slice(15, 20),
-        fri: schedule.slice(20, 25),
+        mon: {
+          morning: schedule.slice(0, 5),
+          afternoon: schedule.slice(5, 9),
+        },
+        tue: {
+          morning: schedule.slice(5, 10),
+          afternoon: schedule.slice(5, 9),
+        },
+        wed: {
+          morning: schedule.slice(10, 15),
+          afternoon: schedule.slice(5, 9),
+        },
+        thu: {
+          morning: schedule.slice(15, 20),
+          afternoon: schedule.slice(15, 19),
+        },
+        fri: {
+          morning: schedule.slice(20, 25),
+          afternoon: schedule.slice(20, 24),
+        },
+        sat: {
+          morning: schedule.slice(20, 25),
+          afternoon: schedule.slice(20, 24),
+        },
       },
     };
     const newSchedule = new Schedule(classSchedule);
@@ -359,6 +461,51 @@ async function createEvent() {
   await newEvent.save();
 }
 
+const fees = [
+  {
+    title: "Tiền học phí kì 2 năm học 2023 - 2024",
+    description: "Tiền học phí kì 2 năm học 2023 - 2024 khối 10, 11",
+    amount: 3000000,
+    type: "tuition",
+    from: "Fri May 22 2023 12:00:00 GMT+0700 (Indochina Time)",
+    to: "Fri June 19 2023 12:00:00 GMT+0700 (Indochina Time)",
+  },
+  {
+    title: "Tiền đồng phục thể dục",
+    description:
+      "Tiền đồng phục thể dục cho học sinh khổi 11 năm học 2023 - 2024",
+    amount: 250000,
+    type: "others",
+    from: "Fri May 22 2023 12:00:00 GMT+0700 (Indochina Time)",
+    to: "Fri May 29 2023 12:00:00 GMT+0700 (Indochina Time)",
+  },
+];
+
+async function createFees(semesters) {
+  console.log("Creating fees...");
+  const studentFees = [];
+  for (const semester of semesters)
+    for (const fee of fees) {
+      const newFee = new Fee({ ...fee, semester: semester._id });
+      await newFee.save();
+      studentFees.push(newFee._id);
+    }
+
+  const students = await Student.find({});
+
+  for (const student of students)
+    for (const fee of studentFees) {
+      student.fees = [
+        ...student.fees,
+        {
+          fee,
+          status: _.sample(status),
+        },
+      ];
+      await student.save();
+    }
+}
+
 const seed = async () => {
   await Admin.deleteMany({});
   await Semester.deleteMany({});
@@ -385,7 +532,8 @@ const seed = async () => {
   await createTeacher(classId);
   console.log("Created teacher");
 
-  await createStudents(classId);
+  const semesters = await getSemesters();
+  await createStudents(classId, semesters);
   console.log("Created students");
 
   const studentId = await getRandomStudentId();
@@ -402,293 +550,10 @@ const seed = async () => {
   await createEvent();
   console.log("Created event");
 
-  console.log("Done!")
+  await createFees(semesters);
+  console.log("Created fees");
+
+  console.log("Done!");
 };
 
 seed();
-
-// // create semester && year
-// console.log("Creating semester...");
-
-// async function createSemester(data) {
-//   const newSemester = new Semester(data);
-//   await newSemester.save();
-// }
-
-// const now = new Date();
-
-// const month = now.getMonth() + 1;
-// const year = month < 9 ? now.getFullYear() - 1 : now.getFullYear();
-// const semester = month < 9 ? 2 : 1;
-
-// const lastResult = [
-//   { time: "2016-2017 II", good: 73, medium: 20, bad: 5, veryBad: 2 },
-//   { time: "2017-2018 I", good: 72, medium: 10, bad: 15, veryBad: 3 },
-//   { time: "2017-2018 II", good: 70, medium: 20, bad: 9, veryBad: 1 },
-//   { time: "2018-2019 I", good: 70, medium: 23, bad: 5, veryBad: 2 },
-//   { time: "2018-2019 II", good: 65, medium: 19, bad: 15, veryBad: 1 },
-//   { time: "2019-2020 I", good: 75, medium: 19, bad: 5, veryBad: 1 },
-// ];
-
-// createSemester({ year, semester, lastResult }).then(() =>
-//   console.log("Created semester")
-// );
-
-// createGrade(grades);
-
-// // create students
-// console.log("Creating students...");
-// let id = 1;
-// let pad = "0000";
-
-// async function createStudent(student) {
-//   const newStudent = new Parent(student);
-//   await newStudent.save();
-// }
-
-// for (const room of classRoom) {
-//   const numberOfStudent = Math.floor(Math.random() * 10 + 35);
-//   for (let i = 1; i < numberOfStudent; i++) {
-//     const stId = pad + id;
-//     id++;
-
-//     const names = renderName();
-//     const yearNow = new Date().getFullYear();
-
-//     const data = {
-//       studentId: stId.substr(stId.length - 5),
-//       studentName: names.studentName,
-//       password,
-//       gender: Math.random() > 0.5,
-//       grade: Number(room[0]),
-//       classRoom: room,
-//       dateOfBirth: dateOfBirth(yearNow - (Number(room[0]) + 6)),
-//       address: renderAddress(),
-//       note: "",
-//       father: {
-//         fullName: names.fatherName,
-//         yearOfBirth: "1987",
-//         phoneNumber: "0123456789",
-//         note: "",
-//       },
-//       mother: {
-//         fullName: names.motherName,
-//         yearOfBirth: "1987",
-//         phoneNumber: "0123456789",
-//         note: "",
-//       },
-//       isDeleted: false,
-//       score1: {
-//         math: {
-//           x1: [9, 9, 9],
-//           x2: [8, 7],
-//           x3: [8],
-//           medium: -1,
-//         },
-//         literature: {
-//           x1: [10, 9, 9],
-//           x2: [8, 7],
-//           x3: [8],
-//           medium: -1,
-//         },
-//         english: {
-//           x1: [10, 9, 9],
-//           x2: [8, 7],
-//           x3: [8],
-//           medium: -1,
-//         },
-//         physics: {
-//           x1: [10, 9, 9],
-//           x2: [8, 7],
-//           x3: [8],
-//           medium: -1,
-//         },
-//         chemistry: {
-//           x1: [10, 9, 9],
-//           x2: [8, 7],
-//           x3: [8],
-//           medium: -1,
-//         },
-//         biology: {
-//           x1: [10, 9, 9],
-//           x2: [8, 7],
-//           x3: [8],
-//           medium: -1,
-//         },
-//         geography: {
-//           x1: [10, 9, 9],
-//           x2: [8, 7],
-//           x3: [8],
-//           medium: -1,
-//         },
-//         history: {
-//           x1: [10, 9, 9],
-//           x2: [8, 7],
-//           x3: [8],
-//           medium: -1,
-//         },
-//         law: {
-//           x1: [10, 9, 9],
-//           x2: [8, 7],
-//           x3: [8],
-//           medium: -1,
-//         },
-//         music: {
-//           x1: [10, 9, 9],
-//           x2: [8, 7],
-//           x3: [8],
-//           medium: -1,
-//         },
-//         art: {
-//           x1: [10, 9, 9],
-//           x2: [8, 7],
-//           x3: [8],
-//           medium: -1,
-//         },
-//         sport: {
-//           x1: [10, 9, 9],
-//           x2: [8, 7],
-//           x3: [8],
-//           medium: -1,
-//         },
-//       },
-//       dayOff1: [],
-//       finalScore1: -1,
-//       conduct1: "Tốt",
-//       result1: "",
-//       score2: {
-//         math: {
-//           x1: [10, 9, 9],
-//           x2: [8, 7],
-//           x3: [8],
-//           medium: -1,
-//         },
-//         literature: {
-//           x1: [10, 9, 9],
-//           x2: [8, 7],
-//           x3: [8],
-//           medium: -1,
-//         },
-//         english: {
-//           x1: [10, 9, 9],
-//           x2: [8, 7],
-//           x3: [8],
-//           medium: -1,
-//         },
-//         physics: {
-//           x1: [10, 9, 9],
-//           x2: [8, 7],
-//           x3: [8],
-//           medium: -1,
-//         },
-//         chemistry: {
-//           x1: [10, 9, 9],
-//           x2: [8, 7],
-//           x3: [8],
-//           medium: -1,
-//         },
-//         biology: {
-//           x1: [10, 9, 9],
-//           x2: [8, 7],
-//           x3: [8],
-//           medium: -1,
-//         },
-//         geography: {
-//           x1: [10, 9, 9],
-//           x2: [8, 7],
-//           x3: [8],
-//           medium: -1,
-//         },
-//         history: {
-//           x1: [10, 9, 9],
-//           x2: [8, 7],
-//           x3: [8],
-//           medium: -1,
-//         },
-//         law: {
-//           x1: [10, 9, 9],
-//           x2: [8, 7],
-//           x3: [8],
-//           medium: -1,
-//         },
-//         music: {
-//           x1: [10, 9, 9],
-//           x2: [8, 7],
-//           x3: [8],
-//           medium: -1,
-//         },
-//         art: {
-//           x1: [10, 9, 9],
-//           x2: [8, 7],
-//           x3: [8],
-//           medium: -1,
-//         },
-//         sport: {
-//           x1: [10, 9, 9],
-//           x2: [8, 7],
-//           x3: [8],
-//           medium: -1,
-//         },
-//       },
-//       dayOff2: [],
-//       finalScore2: -1,
-//       conduct2: "Tốt",
-//       result2: "",
-
-//       subjectTotalScore: {
-//         math: -1,
-//         literature: -1,
-//         english: -1,
-//         physics: -1,
-//         chemistry: -1,
-//         biology: -1,
-//         geography: -1,
-//         history: -1,
-//         law: -1,
-//         music: -1,
-//         art: -1,
-//         sport: -1,
-//       },
-//       totalScore: -1,
-//       totalConduct: "Tốt",
-//       totalResult: "",
-//     };
-//     createStudent(data).then(() =>
-//       console.log(
-//         `Created ${
-//           i + 1
-//         } students of ${numberOfStudent} students of class ${room}`
-//       )
-//     );
-//   }
-// }
-
-// // create teachers
-// console.log("Creating teachers...");
-
-// async function createTeacher(teacher) {
-//   const newTeacher = new Teacher(teacher);
-//   await newTeacher.save();
-// }
-
-// for (const room of classRoom) {
-//   let count = 1;
-//   subjects.map((item, index) => {
-//     const data = {
-//       name: renderName().studentName,
-//       password,
-//       yearOfBirth: "1996",
-//       gender: Math.random() > 0.5,
-//       email: `teacher${count}-${room}@gmail.com`,
-//       phoneNumber: "0123456789",
-//       mainTeacherOfClass: index === 0 ? room : "",
-//       teacherOfClass: room,
-//       subject: item,
-//       isDeleted: false,
-//     };
-
-//     createTeacher(data).then(() => console.log(`Created ${count} teachers`));
-
-//     count++;
-//   });
-// }

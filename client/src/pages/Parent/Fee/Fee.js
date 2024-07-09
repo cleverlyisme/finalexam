@@ -1,19 +1,38 @@
+import { toast } from "sonner";
 import { Col, Row } from "reactstrap";
+import { useEffect, useState } from "react";
 
 import Layout from "../../../components/Layout";
 import FeeInfor from "./components/FeeInfor";
 import useAppContext from "../../../hooks/useAppContext";
 import PaidFees from "./components/PaidFees";
 import FeeList from "./components/FeeList";
-import { useEffect } from "react";
-import { toast } from "sonner";
+import { getStudentFeeLatest } from "../../../services/information.service";
 
 const Fee = () => {
   const {
     authState: { user },
   } = useAppContext();
 
-  useEffect(() => toast.error("Có lỗi xảy ra!"))
+  const [data, setData] = useState({
+    paid: [],
+    notPaid: [],
+  });
+
+  const getData = async () => {
+    try {
+      const response = await getStudentFeeLatest();
+      const data = response.data;
+
+      setData(data);
+    } catch (err) {
+      toast.error(err?.response?.data);
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   return (
     <Layout>
@@ -21,17 +40,18 @@ const Fee = () => {
         <Row>
           <Col md={4} className="d-flex flex-column">
             <FeeInfor className="mb-4" student={user?.student} />
-            {/* <StudentDayOff dayOff={user?.student?.dayOff} /> */}
           </Col>
 
           <Col md={8}>
-            <PaidFees title="Bảng điểm" icon="fas fa-file-alt" className="mb-4">
-              {/* <Transcript studentId={user._id} isComponent /> */}
-            </PaidFees>
+            <PaidFees
+              icon="fas fa-file-alt"
+              className="mb-4"
+              fees={data.paid}
+            />
           </Col>
         </Row>
         <div>
-            <FeeList></FeeList>
+          <FeeList fees={data.notPaid} />
         </div>
       </div>
     </Layout>

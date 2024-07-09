@@ -17,20 +17,21 @@ const semesterSchema = new Schema({
     enum: [1, 2],
   },
   lastResult: {
-    // time: {
-    //   type: String,
-    // },
     good: {
       type: Number,
+      default: 0,
     },
     medium: {
       type: Number,
+      default: 0,
     },
     bad: {
       type: Number,
+      default: 0,
     },
     veryBad: {
       type: Number,
+      default: 0,
     },
     _id: false,
   },

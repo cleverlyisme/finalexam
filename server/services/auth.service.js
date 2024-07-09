@@ -69,7 +69,12 @@ const login = async (email, password, role) => {
     }
 
     case "parent": {
-      const parent = await Parent.findOne({ email }).populate("student").lean();
+      const parent = await Parent.findOne({ email }).populate({
+        path: "student",
+        populate: {
+          path: "mainClass"
+        }
+      }).lean();
       if (!parent) throw new Error("Invalid email or password");
 
       const isPassed = passwordHash.verify(password, parent.password);
@@ -113,7 +118,12 @@ const checkAuth = async (_id, role) => {
     case "parent": {
       const user = await Parent.findOne({ _id })
         .select(["-password", "-__v"])
-        .populate("student")
+        .populate({
+          path: "student",
+          populate: {
+            path: "mainClass"
+          }
+        })
         .lean();
 
       return { ...user, role };

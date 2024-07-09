@@ -21,6 +21,11 @@ const feeSchema = new Schema({
     type: Number,
     required: true,
   },
+  type: {
+    type: String,
+    required: true,
+    enum: ["tuition", "others"],
+  },
   from: {
     type: Date,
     required: true,
@@ -28,6 +33,8 @@ const feeSchema = new Schema({
   },
   to: {
     type: Date,
+    required: true,
+    default: new Date().toISOString(),
   },
   active: {
     type: Boolean,

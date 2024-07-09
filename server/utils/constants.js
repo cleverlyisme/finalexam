@@ -1,3 +1,5 @@
+const _ = require("lodash");
+
 const roles = {
   Admin: "admin",
   Teacher: "teacher",
@@ -30,4 +32,34 @@ const lessons = [
   "Thể dục",
 ];
 
-module.exports = { roles, lessons };
+const randomScores = () => {
+  return {
+    x1: [_.random(7, 10), _.random(7, 10), _.random(7, 10)],
+    x2: [_.random(7, 10), _.random(7, 10)],
+    x3: [_.random(7, 10)],
+    medium: _.random(7, 10),
+  };
+};
+
+const scores = {
+  math: randomScores(),
+  literature: randomScores(),
+  english: randomScores(),
+  physics: randomScores(),
+  chemistry: randomScores(),
+  biology: randomScores(),
+  geography: randomScores(),
+  history: randomScores(),
+  law: randomScores(),
+  music: randomScores(),
+  art: randomScores(),
+  sport: randomScores(),
+};
+
+const conducts = ["Tốt", "Khá", "Trung bình", "Yếu"];
+
+const ranks = ["Giỏi", "Tiên tiến"];
+
+const status = ["paid", "not-paid", "canceled"];
+
+module.exports = { roles, lessons, scores, conducts, ranks, status };

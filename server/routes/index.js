@@ -6,6 +6,7 @@ const scheduleRoute = require("./schedule.route");
 const adminRoute = require("./admin.route");
 const highlightRoute = require("./highlight.route");
 const eventRoute = require("./event.route");
+const informationRoute = require("./information.route");
 // const uploadRoute = require("./upload.route");
 
 const routes = express.Router();
@@ -16,6 +17,7 @@ routes.use("/admin", adminRoute);
 routes.use("/highlights", highlightRoute);
 routes.use("/events", eventRoute);
 routes.use("/schedules", scheduleRoute);
+routes.use("/informations", informationRoute);
 // routes.use("/upload", uploadRoute);
 
 module.exports = routes;

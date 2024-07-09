@@ -6,7 +6,7 @@ import { Row, Col, Input, Label } from "reactstrap";
 
 import LabelRequired from "../common/LabelRequired";
 import Feedback from "../common/Feedback";
-import AdminBlock from "../Admin/AdminBlock";
+import Block from "../common/Block";
 import ViewModal from "../../components/modals/ViewModal";
 
 import useAppContext from "../../hooks/useAppContext";
@@ -71,7 +71,7 @@ const CalendarContainer = (props) => {
   );
 
   return (
-    <AdminBlock title="Lịch" icon="far fa-calendar-alt" height="350px">
+    <Block title="Lịch" icon="far fa-calendar-alt" height="350px">
       {renderModal()}
       <Calendar
         onChange={(e) => {
@@ -83,7 +83,7 @@ const CalendarContainer = (props) => {
         value={new Date()}
         showWeekNumbers
       />
-    </AdminBlock>
+    </Block>
   );
 };
 

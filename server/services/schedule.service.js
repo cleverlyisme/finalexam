@@ -25,13 +25,32 @@ const getScheduleByTeacher = async (id) => {
     throw new Error("Teacher not found");
   }
 
-  const week = ["mon", "tue", "wed", "thu", "fri"];
+  const week = ["mon", "tue", "wed", "thu", "fri", "sat"];
   let teacherSchedule = {
-    mon: new Array(5).fill(""),
-    tue: new Array(5).fill(""),
-    wed: new Array(5).fill(""),
-    thu: new Array(5).fill(""),
-    fri: new Array(5).fill(""),
+    mon: {
+      morning: new Array(5).fill(""),
+      afternoon: new Array(4).fill(""),
+    },
+    tue: {
+      morning: new Array(5).fill(""),
+      afternoon: new Array(4).fill(""),
+    },
+    wed: {
+      morning: new Array(5).fill(""),
+      afternoon: new Array(4).fill(""),
+    },
+    thu: {
+      morning: new Array(5).fill(""),
+      afternoon: new Array(4).fill(""),
+    },
+    fri: {
+      morning: new Array(5).fill(""),
+      afternoon: new Array(4).fill(""),
+    },
+    sat: {
+      morning: new Array(5).fill(""),
+      afternoon: new Array(4).fill(""),
+    },
   };
   const {_id, fullName, teacherOfClasses, subject} = teacher;
 
@@ -42,8 +61,17 @@ const getScheduleByTeacher = async (id) => {
     }).populate("class");
 
     week.map((item) => {
-      if (room.schedule[item].includes(subject)) {
-        teacherSchedule[item] = room.schedule[item].map((sj) => {
+      if (room.schedule[item].morning.includes(subject)) {
+        teacherSchedule[item].morning = room.schedule[item].morning.map((sj) => {
+          if (sj === subject) {
+            return room.class.name;
+          }
+          return "";
+        });
+      }
+
+      if (room.schedule[item].afternoon.includes(subject)) {
+        teacherSchedule[item].afternoon = room.schedule[item].afternoon.map((sj) => {
           if (sj === subject) {
             return room.class.name;
           }

@@ -7,7 +7,7 @@ import useAppContext from "../../hooks/useAppContext";
 import Layout from "../../components/Layout";
 import Schedule from "../../components/Schedule";
 import StudentOff from "./components/StudentOff";
-import AdminBlock from "../../components/Admin/AdminBlock";
+import Block from "../../components/common/Block";
 import ProfileContainer from "../../components/ProfileContainer";
 import LastestHighlightOrEvent from "../../components/LastestHighlightOrEvent";
 import { getLastestHighlights } from "../../services/highlight.service";
@@ -18,6 +18,7 @@ const TeacherHome = () => {
     authState: { user },
     loadingState: { setIsLoading },
   } = useAppContext();
+  console.log({ user });
 
   const [data, setData] = useState([]);
 
@@ -44,13 +45,13 @@ const TeacherHome = () => {
           <Col md={4} className="d-flex flex-column mb-4">
             {user?.mainTeacherOfClass &&
               user?.mainTeacherOfClass.name.trim() && <StudentOff />}
-            <AdminBlock
+            <Block
               title="Thời khóa biểu"
               icon="fas fa-calendar-week"
               className="flex-grow-1"
             >
               <Schedule teacherId={user?._id} isComponent />
-            </AdminBlock>
+            </Block>
           </Col>
 
           <Col md={4} className="mb-4 d-flex flex-column">
@@ -69,7 +70,7 @@ const TeacherHome = () => {
                 {/* <TeacherMainClass userInformation={user} /> */}
               </Col>
               <Col md={12} className="mb-4">
-                <AdminBlock
+                <Block
                   title={`Danh sách giáo viên lớp ${user?.mainTeacherOfClass.name}`}
                   icon="fas fa-list"
                 >
@@ -77,7 +78,7 @@ const TeacherHome = () => {
                                     classRoom={user.mainTeacherOfClass}
                                     noLabel
                                 /> */}
-                </AdminBlock>
+                </Block>
               </Col>
             </>
           )}

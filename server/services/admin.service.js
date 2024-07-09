@@ -11,7 +11,7 @@ const getReports = async (_id) => {
   const numberOfClasses = await Class.countDocuments({ isDeleted: false });
 
   const studentsOffWithPermission = await Student.countDocuments({
-    dayoffs: {
+    dayOffs: {
       $elemMatch: {
         date: moment().format("YYYY-MM-DD"),
         withPermission: true,
@@ -19,7 +19,7 @@ const getReports = async (_id) => {
     },
   });
   const studentsOffWithoutPermission = await Student.countDocuments({
-    dayoffs: {
+    dayOffs: {
       $elemMatch: {
         date: moment().format("YYYY-MM-DD"),
         withPermission: false,

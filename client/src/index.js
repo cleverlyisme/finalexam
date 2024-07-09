@@ -14,13 +14,14 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "react-perfect-scrollbar/dist/css/styles.css";
 import "react-notifications-component/dist/theme.css";
 
+import history from "./configs/history.config";
 import { DrawerContext } from "./contexts/drawer.context";
 import { AppContextProvider } from "./contexts/app.context";
 import { ReactNotifications } from "react-notifications-component";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <BrowserRouter>
+  <BrowserRouter history={history}>
     <AppContextProvider>
       <DrawerContext>
         <ReactNotifications />

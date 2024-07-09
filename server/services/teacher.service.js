@@ -5,8 +5,8 @@ const Student = require("../models/student.model");
 
 const formatStudents = (students, date) => {
   const formattedStudents = students.map((student) => {
-    const dayoffs = student.dayoffs;
-    const dateFound = dayoffs.find((day) => {
+    const dayOffs = student.dayOffs;
+    const dateFound = dayOffs.find((day) => {
       return day.date.toISOString() === new Date(date).toISOString();
     });
 
@@ -16,11 +16,12 @@ const formatStudents = (students, date) => {
       mainClass: student.mainClass.name,
       gender: student.gender ? "Nam" : "Nữ",
       dateOfBirth: dayjs(student.dateOfBirth).format("DD-MM-YYYY"),
-      status: !dateFound
-        ? "Có mặt"
-        : dateFound?.withPermission
-        ? "Nghỉ học có phép"
-        : "Nghỉ học không phép",
+      status:
+        dateFound?.withPermission === 1
+          ? "Nghỉ học có phép"
+          : dateFound?.withPermission === 0
+          ? "Nghỉ học không phép"
+          : "Có mặt",
     };
   });
 
@@ -29,9 +30,9 @@ const formatStudents = (students, date) => {
 
 const getAllTeachers = async () => {
   const teachers = await Teacher.find().lean();
-  
+
   return teachers || [];
-}
+};
 
 const getStudentsOfMainClass = async (_id) => {
   const teacher = await Teacher.findOne({ _id }).lean();
@@ -76,20 +77,19 @@ const markBreak = async (_id, students, date, withPermission) => {
   for (const studentId of students) {
     const student = await Student.findOne({ _id: studentId });
 
-    student.dayoffs = student.dayoffs.filter(
+    student.dayOffs = student.dayOffs.filter(
       (day) =>
         day.date.toISOString().slice(0, 10) !==
         new Date(date).toISOString().slice(0, 10)
     );
 
-    if (Number(withPermission) !== 2)
-      student.dayoffs = [
-        ...student.dayoffs,
-        {
-          date: new Date(date).toISOString(),
-          withPermission,
-        },
-      ];
+    student.dayOffs = [
+      ...student.dayOffs,
+      {
+        date: new Date(date).toISOString(),
+        withPermission,
+      },
+    ];
 
     await student.save();
   }

@@ -3,7 +3,7 @@ import moment from "moment";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-import AdminBlock from "./Admin/AdminBlock";
+import Block from "./common/Block";
 
 const Bold = styled.span`
   font-weight: 500;
@@ -24,7 +24,7 @@ const ProfileContainer = (props) => {
 
   return (
     <div className={props.className && props.className}>
-      <AdminBlock title={profileTitle}>
+      <Block title={profileTitle}>
         {user?.role === "teacher" ? (
           <div>
             <p>
@@ -54,7 +54,7 @@ const ProfileContainer = (props) => {
             <p>
               Các lớp đang dạy:{" "}
               <Bold>
-                {user?.teacherOfClasses.map((item) => item.name).join(", ")}
+                {user?.teacherOfClasses?.map((item) => item.name).join(", ")}
               </Bold>
             </p>
           </div>
@@ -115,7 +115,7 @@ const ProfileContainer = (props) => {
             )}
           </div>
         )}
-      </AdminBlock>
+      </Block>
     </div>
   );
 };

@@ -42,7 +42,7 @@ const Login = (props) => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState("teacher");
+  const [role, setRole] = useState("parent");
 
   const options = [
     { label: "Quản lý", value: "admin" },

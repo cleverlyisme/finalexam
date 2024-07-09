@@ -33,7 +33,7 @@ const Schedule = ({ classRoom, role, teacherId, time, isComponent }) => {
 
   useEffect(() => {
     loadData();
-  }, [classRoom]);
+  }, [classRoom, teacherId]);
 
   return (
     <div className="mb-2">
@@ -65,17 +65,22 @@ const Schedule = ({ classRoom, role, teacherId, time, isComponent }) => {
               <Table bordered striped hover size="sm" responsive>
                 <thead>
                   <tr>
-                    {["Thứ hai", "Thứ ba", "Thứ tư", "Thứ năm", "Thứ sáu"].map(
-                      (day, index) => (
-                        <th key={index}>{day}</th>
-                      )
-                    )}
+                    {[
+                      "Thứ hai",
+                      "Thứ ba",
+                      "Thứ tư",
+                      "Thứ năm",
+                      "Thứ sáu",
+                      "Thứ bảy",
+                    ].map((day, index) => (
+                      <th key={index}>{day}</th>
+                    ))}
                   </tr>
                 </thead>
                 <tbody>
                   {[0, 1, 2, 3, 4].map((number) => (
                     <tr key={number}>
-                      {["mon", "tue", "wed", "thu", "fri"].map(
+                      {["mon", "tue", "wed", "thu", "fri", "sat"].map(
                         (item, index) => (
                           <td
                             key={index}
@@ -83,7 +88,24 @@ const Schedule = ({ classRoom, role, teacherId, time, isComponent }) => {
                               height: "33.33px",
                             }}
                           >
-                            {data.schedule[item][number]}
+                            {data.schedule[item]["morning"][number]}
+                          </td>
+                        )
+                      )}
+                    </tr>
+                  ))}
+                  <br />
+                  {[0, 1, 2, 3].map((number) => (
+                    <tr key={number}>
+                      {["mon", "tue", "wed", "thu", "fri", "sat"].map(
+                        (item, index) => (
+                          <td
+                            key={index}
+                            style={{
+                              height: "33.33px",
+                            }}
+                          >
+                            {data.schedule[item]["afternoon"][number]}
                           </td>
                         )
                       )}
@@ -91,7 +113,7 @@ const Schedule = ({ classRoom, role, teacherId, time, isComponent }) => {
                   ))}
                 </tbody>
               </Table>
-              {!teacherId && (
+              {teacherId && (
                 <NewTabLink
                   title="Chỉnh sửa"
                   to={`/updateSchedule/${classRoom}`}

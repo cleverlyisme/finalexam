@@ -7,7 +7,7 @@ import { BiPhoneCall } from "react-icons/bi";
 import { FaFacebook, FaGithub, FaLinkedin, FaWallet } from "react-icons/fa";
 import { CiLogout } from "react-icons/ci";
 import { RiAccountCircleFill } from "react-icons/ri";
-import { PiStudentBold } from "react-icons/pi"; 
+import { PiStudentBold } from "react-icons/pi";
 
 import useAppContext from "../../hooks/useAppContext";
 import MainDrawer from "./MainDrawer";
@@ -64,6 +64,11 @@ const MenuDrawer = ({ drawerOpen, toggleDrawer }) => {
             icon: HiOutlineUserGroup,
           },
           {
+            name: "Quản lý học phí",
+            link: "/fees",
+            icon: FaWallet,
+          },
+          {
             name: "Liên hệ",
             link: "/contact-us",
             icon: BiPhoneCall,
@@ -84,7 +89,7 @@ const MenuDrawer = ({ drawerOpen, toggleDrawer }) => {
           {
             name: "Học phí",
             link: "/fees",
-            icon: FaWallet
+            icon: FaWallet,
           },
           {
             name: "Liên hệ",

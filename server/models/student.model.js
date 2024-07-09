@@ -24,10 +24,10 @@ const studentSchema = new Schema(
       required: true,
     },
     mainClass: { type: Schema.Types.ObjectId, ref: Class, required: true },
-    dayoffs: [
+    dayOffs: [
       {
         date: { type: Date, required: true },
-        withPermission: { type: Boolean, default: false },
+        withPermission: { type: Number, default: 2 },
       },
     ],
     scores: [
@@ -136,40 +136,70 @@ const studentSchema = new Schema(
         },
       },
     ],
-    subjectTotalScore: {
-      math: { type: Number },
-      literature: { type: Number },
-      english: { type: Number },
-      physics: { type: Number },
-      chemistry: { type: Number },
-      biology: { type: Number },
-      geography: { type: Number },
-      history: { type: Number },
-      law: { type: Number },
-      music: { type: Number },
-      art: { type: Number },
-      sport: { type: Number },
-    },
-    totalScore: {
-      type: Number,
-    },
-    totalConduct: {
-      type: String,
-      enum: ["Tốt", "Khá", "Trung bình", "Yếu"],
-    },
-    totalResult: {
-      type: String,
-      enum: ["Giỏi", "Tiên tiến", "Trung bình", "Yếu"],
-    },
+    subjectTotalScore: [
+      {
+        time: {
+          type: String,
+          required: true,
+        },
+        detail: {
+          math: { type: Number },
+          literature: { type: Number },
+          english: { type: Number },
+          physics: { type: Number },
+          chemistry: { type: Number },
+          biology: { type: Number },
+          geography: { type: Number },
+          history: { type: Number },
+          law: { type: Number },
+          music: { type: Number },
+          art: { type: Number },
+          sport: { type: Number },
+        },
+      },
+    ],
+    totalScore: [
+      {
+        time: {
+          type: String,
+          required: true,
+        },
+        score: { type: Number },
+      },
+    ],
+    totalConducts: [
+      {
+        time: {
+          type: String,
+          required: true,
+        },
+        conduct: {
+          type: String,
+          enum: ["Tốt", "Khá", "Trung bình", "Yếu"],
+        },
+      },
+    ],
+    totalResult: [
+      {
+        time: {
+          type: String,
+          required: true,
+        },
+        rank: {
+          type: String,
+          enum: ["Giỏi", "Tiên tiến", "Trung bình", "Yếu"],
+        },
+      },
+    ],
     fees: [
       {
-        fee: {type: Schema.Types.ObjectId, ref: Fee, required: true},
+        fee: { type: Schema.Types.ObjectId, ref: Fee, required: true },
         status: {
           type: String,
-          enum: ['paid', 'not-paid', 'canceled'],
-          default: 'not-paid'
-        }
-      }
+          enum: ["paid", "not-paid", "canceled"],
+          default: "not-paid",
+        },
+      },
     ],
     isDeleted: {
       type: Boolean,

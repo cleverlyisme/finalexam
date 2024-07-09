@@ -2,13 +2,14 @@ import React from "react";
 import { Row, Col } from "reactstrap";
 import moment from "moment";
 
-import AdminBlock from "../components/Admin/AdminBlock";
+import Block from "../components/common/Block";
 import AdminCard from "../components/Admin/AdminCard";
 import Tooltip from "../components/common/Tooltip";
 
 export default (props) => {
-  const permission = props?.dayOff?.filter((day) => day.permission) || [];
-  const noPermission = props?.dayOff?.filter((day) => !day.permission) || [];
+  const permission = props?.dayOffs?.filter((day) => day.withPermission) || [];
+  const noPermission =
+    props?.dayOffs?.filter((day) => !day.withPermission) || [];
 
   const renderTooltipPermission = () => {
     if (permission?.length > 0) {
@@ -16,7 +17,7 @@ export default (props) => {
         <Tooltip key="permission" id="permission">
           {permission.map((item, index) => (
             <p key={index} className="mb-2">
-              {moment(item.day).format("DD/MM/YYYY")}
+              {moment(item.date).format("DD/MM/YYYY")}
             </p>
           ))}
         </Tooltip>
@@ -30,7 +31,7 @@ export default (props) => {
         <Tooltip key="noPermission" id="noPermission">
           {noPermission.map((item, index) => (
             <p key={index} className="mb-2">
-              {moment(item.day).format("DD/MM/YYYY")}
+              {moment(item.date).format("DD/MM/YYYY")}
             </p>
           ))}
         </Tooltip>
@@ -39,10 +40,10 @@ export default (props) => {
   };
 
   return (
-    <AdminBlock
+    <Block
       title="Số ngày nghỉ trong học kỳ"
       icon="fas fa-times"
-      className="flex-grow-1 mb-4"
+      className="mb-4"
     >
       {renderTooltipPermission()}
       {renderTooltipNoPermission()}
@@ -65,6 +66,6 @@ export default (props) => {
           </div>
         </Col>
       </Row>
-    </AdminBlock>
+    </Block>
   );
 };
