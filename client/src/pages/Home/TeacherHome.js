@@ -36,7 +36,7 @@ const TeacherHome = () => {
 
   return (
     <Layout>
-      <div className="mb-2 px-2">
+      <div className="mb-2">
         <Row>
           <Col md={4} className="mb-4">
             <ProfileContainer user={user} />

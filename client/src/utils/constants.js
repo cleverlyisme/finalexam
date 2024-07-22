@@ -12,3 +12,5 @@ export const subjects = [
   "Mỹ thuật",
   "Thể dục",
 ];
+
+export const grades = [10, 11, 12];

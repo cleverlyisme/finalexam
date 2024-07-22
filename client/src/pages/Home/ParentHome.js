@@ -25,7 +25,7 @@ const ParentHome = () => {
 
   return (
     <Layout>
-      <div className="mb-2 px-4">
+      <div className="mb-2">
         <Row>
           <Col md={4} className="d-flex flex-column">
             <ProfileContainer className="mb-4" user={user} />

@@ -5,11 +5,10 @@ const teacherController = require("../controllers/teacher.controller");
 
 const teacherRoute = express.Router();
 
-teacherRoute.get(
-  "/",
-  auth(["admin"]),
-  teacherController.getAllTeachers
-);
+teacherRoute.get("/", auth(["admin"]), teacherController.getAllTeachers);
+teacherRoute.get("/:id", auth(["admin"]), teacherController.getTeacher);
+teacherRoute.put("/:id", auth(["admin"]), teacherController.updateTeacher);
+teacherRoute.post("/", auth(["admin"]), teacherController.createTeacher);
 teacherRoute.get(
   "/students",
   auth(["teacher"]),
@@ -25,5 +24,6 @@ teacherRoute.put(
   auth(["teacher"]),
   teacherController.markBreak
 );
+teacherRoute.delete("/:id", auth(["admin"]), teacherController.deleteTeacher);
 
 module.exports = teacherRoute;

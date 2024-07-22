@@ -16,7 +16,7 @@ const Layout = ({ children }) => {
       <button className={inActive} onClick={toggleDrawer}>
         <RiMenuFold2Line />
       </button>
-      {children}
+      <div className="px-4">{children}</div>
     </div>
   );
 };

@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const passwordHash = require("password-hash");
 const _ = require("lodash");
 const {
-  lessons,
+  subjects,
   scores,
   conducts,
   ranks,

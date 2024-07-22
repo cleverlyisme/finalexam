@@ -5,6 +5,7 @@ const informationController = require("../controllers/information.controller");
 
 const informationRoute = express.Router();
 
+informationRoute.get("/subjects", auth(), informationController.getAllSubjects);
 informationRoute.get(
   "/transcript/latest",
   auth(),

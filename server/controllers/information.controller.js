@@ -1,5 +1,15 @@
 const service = require("../services/information.service");
 
+const { subjects } = require("../utils/constants");
+
+const getAllSubjects = async (req, res) => {
+  try {
+    res.status(200).send(subjects.sort());
+  } catch (err) {
+    res.status(500).send(err.message);
+  }
+};
+
 const getStudentTranscriptLatestSemester = async (req, res) => {
   try {
     const { userId } = req;
@@ -23,6 +33,7 @@ const getStudentLatestFees = async (req, res) => {
 };
 
 module.exports = {
+  getAllSubjects,
   getStudentTranscriptLatestSemester,
   getStudentLatestFees,
 };

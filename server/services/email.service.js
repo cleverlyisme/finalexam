@@ -2,9 +2,9 @@ const nodemailer = require("nodemailer");
 
 const environments = require("../utils/environments");
 
-const { APP_EMAIL, APP_PASSWORD, PUBLIC_URL } = environments;
+const { APP_EMAIL, APP_PASSWORD } = environments;
 
-const sendVerifyToken = async (email, token) => {
+const sendEmail = async (to, subject, body) => {
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -17,16 +17,14 @@ const sendVerifyToken = async (email, token) => {
     },
   });
 
-  const link = `${PUBLIC_URL}/api/auth/verify-email?token=${token}`;
-
   const mailOptions = {
     from: {
-      name: "Tomovie App",
-      address: "admin@tomovie.app",
+      name: "ToEdu School",
+      address: "admin@toedu.app",
     },
-    to: email,
-    subject: "Verify your email address",
-    html: `Click this link to verify your email address:</br><a href="${link}">${link}</a>`,
+    to,
+    subject,
+    html: body,
   };
 
   transporter.sendMail(mailOptions, (error, info) => {
@@ -37,4 +35,4 @@ const sendVerifyToken = async (email, token) => {
   });
 };
 
-module.exports = { sendVerifyToken };
+module.exports = { sendEmail };

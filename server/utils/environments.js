@@ -3,6 +3,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 const environments = {
+  ENVIRONMENT: process.env.ENVIRONMENT || "DEVELOPMENT",
   PUBLIC_URL: process.env.PUBLIC_URL,
   PORT: process.env.PORT,
   MONGO_ATLAS_URI: process.env.MONGO_ATLAS_URI,

@@ -16,7 +16,8 @@ const AdminHome = () => {
   const {
     loadingState: { setIsLoading },
   } = useAppContext();
-  const [data, setData] = useState([]);
+  const [events, setEvents] = useState([]);
+  const [highlights, setHightlights] = useState([]);
 
   const loadData = async (isHighlight) => {
     setIsLoading(true);
@@ -25,7 +26,7 @@ const AdminHome = () => {
         ? await getLastestHighlights()
         : await getLastestEvents();
       const data = response.data;
-      setData(data);
+      isHighlight ? setHightlights(data) : setEvents(data);
     } catch (err) {
       toast.error(err?.response?.data);
     }
@@ -34,7 +35,7 @@ const AdminHome = () => {
 
   return (
     <Layout>
-      <div className="px-4">
+      <div>
         <AdminReport />
         <AdminChart />
         <Row>
@@ -46,12 +47,12 @@ const AdminHome = () => {
             <LastestHighlightOrEvent
               isHighlight
               loadData={loadData}
-              data={data}
+              data={highlights}
             />
           </Col>
 
           <Col md={6} xl={4} className="mb-4">
-            <LastestHighlightOrEvent loadData={loadData} data={data} />
+            <LastestHighlightOrEvent loadData={loadData} data={events} />
           </Col>
         </Row>
       </div>

@@ -55,12 +55,12 @@ const MenuDrawer = ({ drawerOpen, toggleDrawer }) => {
           },
           {
             name: "Quản lý học sinh",
-            link: "/about-us",
+            link: "/students",
             icon: HiOutlineUserGroup,
           },
           {
             name: "Quản lý giáo viên",
-            link: "/about-us",
+            link: "/teachers",
             icon: HiOutlineUserGroup,
           },
           {

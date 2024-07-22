@@ -25,7 +25,7 @@ root.render(
     <AppContextProvider>
       <DrawerContext>
         <ReactNotifications />
-        <Toaster position="top-right" richColors duration={3000} />
+        <Toaster position="bottom-right" richColors duration={3000} />
         <App />
       </DrawerContext>
     </AppContextProvider>

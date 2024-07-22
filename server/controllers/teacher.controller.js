@@ -2,13 +2,104 @@ const service = require("../services/teacher.service");
 
 const getAllTeachers = async (req, res) => {
   try {
-    const teachers = await service.getAllTeachers();
+    const { search, filterClass, filterGrade, filterSubject, currentPage } =
+      req.query;
+    const teachers = await service.getAllTeachers({
+      search,
+      filterClass,
+      filterGrade,
+      filterSubject,
+      currentPage,
+    });
 
-    res.status(200).send({ teachers });
+    res.status(200).send(teachers);
+  } catch (err) {
+    res.status(500).json(err.message);
+  }
+};
+
+const getTeacher = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const teacher = await service.getTeacher(id);
+
+    res.status(200).send(teacher);
+  } catch (err) {
+    res.status(404).json(err.message);
+  }
+};
+
+const createTeacher = async (req, res) => {
+  try {
+    const {
+      fullName,
+      yearOfBirth,
+      gender,
+      email,
+      phoneNumber,
+      mainTeacherOfClass,
+      subject,
+      teacherOfClasses,
+    } = req.body;
+
+    const teacher = await service.createTeacher({
+      fullName,
+      yearOfBirth,
+      gender,
+      email,
+      phoneNumber,
+      mainTeacherOfClass,
+      subject,
+      teacherOfClasses,
+    });
+
+    res.status(200).send(teacher);
   } catch (err) {
     res.status(400).json(err.message);
   }
-}
+};
+
+const updateTeacher = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const {
+      fullName,
+      yearOfBirth,
+      gender,
+      email,
+      phoneNumber,
+      mainTeacherOfClass,
+      subject,
+      teacherOfClasses,
+    } = req.body;
+
+    const teacher = await service.updateTeacher(id, {
+      fullName,
+      yearOfBirth,
+      gender,
+      email,
+      phoneNumber,
+      mainTeacherOfClass,
+      subject,
+      teacherOfClasses,
+    });
+
+    res.status(200).send(teacher);
+  } catch (err) {
+    res.status(400).json(err.message);
+  }
+};
+
+const deleteTeacher = async (req, res) => {
+  try {
+    const { id } = req.params;
+    await service.deleteTeacher(id);
+
+    res.status(200).send(true);
+  } catch (err) {
+    res.status(400).json(err.message);
+  }
+};
 
 const getStudentsOfMainClass = async (req, res) => {
   try {
@@ -55,6 +146,10 @@ const markBreak = async (req, res) => {
 
 module.exports = {
   getAllTeachers,
+  getTeacher,
+  createTeacher,
+  updateTeacher,
+  deleteTeacher,
   getStudentsOfMainClass,
   getStudentsOfMainClassByDate,
   markBreak,

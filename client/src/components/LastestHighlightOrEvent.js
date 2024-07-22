@@ -11,8 +11,7 @@ import ViewModal from "./modals/ViewModal";
 import LabelRequired from "./common/LabelRequired";
 import Feedback from "./common/Feedback";
 import useAppContext from "../hooks/useAppContext";
-import { getLastestHighlights } from "../services/highlight.service";
-import { getLastestEvents, updateEvent } from "../services/event.service";
+import { updateEvent } from "../services/event.service";
 
 const highlightTitle = (
   <div className="d-flex align-items-center">
@@ -33,7 +32,7 @@ const LastestHighlightOrEvent = (props) => {
   const [checkContent, setCheckContent] = useState(false);
 
   useEffect(() => {
-    props.loadData(props.isHighlight);
+    props.loadData(props?.isHighlight);
   }, []);
 
   const { data } = props;

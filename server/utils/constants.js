@@ -1,31 +1,22 @@
 const _ = require("lodash");
 
+const pageSize = 25;
+
 const roles = {
   Admin: "admin",
   Teacher: "teacher",
   Parent: "parent",
 };
 
-const lessons = [
-  "Văn",
-  "Văn",
-  "Văn",
-  "Văn",
+const subjects = [
   "Toán",
-  "Toán",
-  "Toán",
-  "Toán",
-  "Vật lý",
+  "Văn",
+  "Anh",
   "Vật lý",
   "Hóa học",
-  "Hóa học",
   "Sinh học",
-  "Sinh học",
-  "Anh",
-  "Anh",
-  "Anh",
-  "Sử",
   "Địa",
+  "Sử",
   "GDCD",
   "Âm nhạc",
   "Mỹ thuật",
@@ -62,4 +53,4 @@ const ranks = ["Giỏi", "Tiên tiến"];
 
 const status = ["paid", "not-paid", "canceled"];
 
-module.exports = { roles, lessons, scores, conducts, ranks, status };
+module.exports = { pageSize, roles, subjects, scores, conducts, ranks, status };

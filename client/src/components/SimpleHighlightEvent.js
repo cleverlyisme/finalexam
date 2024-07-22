@@ -13,8 +13,9 @@ const SimpleHighlightEvent = ({ item, loadData, isHighlight, onOpenModal }) => {
     loadingState: { setIsLoading },
   } = useAppContext();
   const htmlContent = document.createElement("p");
-  htmlContent.innerHTML = item.content;
+  htmlContent.innerHTML = item?.content;
   const pureContent = htmlContent.innerText;
+  console.log({ isHighlight, item });
 
   const handleDeleteEvent = async (id) => {
     setIsLoading(true);
